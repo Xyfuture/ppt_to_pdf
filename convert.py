@@ -1,5 +1,15 @@
 import comtypes.client
 import os
+import shutil
+
+def mkdir_ppt():
+    cwd = os.getcwd()
+    new_dir = cwd+'\\ppt'
+    if not os.path.exists(new_dir):
+        os.makedirs(new_dir)
+
+def move_file(file_name):
+    shutil.move(file_name,"ppt");
 
 def init_powerpoint():
     powerpoint = comtypes.client.CreateObject("Powerpoint.Application")
@@ -21,9 +31,12 @@ def convert_files_in_folder(powerpoint, folder):
     for pptfile in pptfiles:
         fullpath = os.path.join(cwd, pptfile)
         ppt_to_pdf(powerpoint, fullpath, fullpath)
+        move_file(pptfile)
+
 
 if __name__ == "__main__":
     powerpoint = init_powerpoint()
     cwd = os.getcwd()
+    mkdir_ppt()
     convert_files_in_folder(powerpoint, cwd)
     powerpoint.Quit()
